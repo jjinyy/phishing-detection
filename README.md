@@ -1,15 +1,15 @@
 # 5분 방패 AI - 사기범과 나 사이에 서는 AI 통화 보호막
 
-## 📋 프로젝트 개요
+## 프로젝트 개요
 
 낯선 전화가 오면 AI가 최대 5분간 대신 통화하여 피싱 여부를 분석하고, 사용자는 통화 결과 보고서만 보고 안전하게 판단하는 AI 기반 피싱 예방 서비스입니다.
 
-## 🎯 핵심 가치
+## 핵심 가치
 
 - 사용자는 사기범과 직접 대화하지 않는다
 - 피싱 위험은 통화 이후가 아닌, 통화 순간에 차단한다
 
-## 🚀 주요 기능
+## 주요 기능
 
 1. **AI 대리 통화 기능** (최대 5분)
    - 앱 내 VoIP 기반 AI 통화
@@ -29,7 +29,7 @@
    - AI는 결정하지 않음
    - 사용자는 보고서를 보고 판단
 
-## 📁 프로젝트 구조
+## 프로젝트 구조
 
 ```
 police/
@@ -41,31 +41,29 @@ police/
 │   │   └── stt_service.py     # 음성 인식 서비스
 │   ├── models/          # 데이터 모델
 │   └── utils/           # 유틸리티 함수
-├── frontend/            # React Native 앱
-│   ├── src/
-│   │   ├── screens/     # 화면 컴포넌트
-│   │   ├── components/  # 재사용 컴포넌트
-│   │   └── services/    # API 서비스
-│   └── App.js
+├── frontend/            # 웹앱 프론트엔드
+│   ├── index.html       # 메인 HTML 파일
+│   ├── app-full.js      # React 앱 전체 코드
+│   └── services/        # STT/TTS 서비스
 ├── requirements.txt     # Python 의존성
-└── package.json        # Node.js 의존성
+└── README.md           # 프로젝트 문서
 ```
 
-## 🛠 기술 스택
+## 기술 스택
 
 ### Backend
 - Python 3.9+
 - Flask (웹 프레임워크)
 - OpenAI API (LLM)
-- Web Speech API / Google Cloud Speech-to-Text (STT)
+- Web Speech API (STT)
 - Twilio (VoIP 통화)
 
 ### Frontend
-- React Native
-- React Navigation
-- Axios (HTTP 클라이언트)
+- React 18 (CDN)
+- HTML/JavaScript
+- Web Speech API (STT/TTS)
 
-## 📦 설치 및 실행
+## 설치 및 실행
 
 ### Backend 설정
 
@@ -80,23 +78,23 @@ venv\Scripts\activate
 pip install -r requirements.txt
 
 # 환경 변수 설정 (.env 파일 생성)
-cp .env.example .env
-# .env 파일에 API 키 설정
+# OPENAI_API_KEY=your_openai_api_key
 
 # 서버 실행
 cd backend
-python app.py
+python run.py
 ```
 
 ### Frontend 설정
 
 ```bash
 cd frontend
-npm install
-npm start
+npx serve -s . -l 3000
 ```
 
-## 🔐 환경 변수
+브라우저에서 `http://localhost:3000` 접속
+
+## 환경 변수
 
 `.env` 파일에 다음 변수들을 설정하세요:
 
@@ -107,7 +105,7 @@ TWILIO_AUTH_TOKEN=your_twilio_auth_token
 GOOGLE_CLOUD_API_KEY=your_google_cloud_api_key (선택사항)
 ```
 
-## 📱 사용 시나리오
+## 사용 시나리오
 
 1. 사용자가 낯선 번호로부터 전화 수신
 2. "AI 대신 받기" 버튼 선택
@@ -115,13 +113,12 @@ GOOGLE_CLOUD_API_KEY=your_google_cloud_api_key (선택사항)
 4. 통화 종료
 5. 사용자에게 결과 리포트 도착
 
-## 🔒 개인정보 보호
+## 개인정보 보호
 
 - 통화 음성 서버 저장 없음
 - 실시간 처리 후 즉시 폐기
 - 사용자 동의 기반 서비스 운영
 
-## 📄 라이선스
+## 라이선스
 
 MIT License
-

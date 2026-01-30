@@ -1,12 +1,12 @@
 # 설치 및 실행 가이드
 
-## 📋 사전 요구사항
+## 사전 요구사항
 
 - Python 3.9 이상
 - Node.js 16 이상
 - npm 또는 yarn
 
-## 🔧 Backend 설정
+## Backend 설정
 
 ### 1. 가상환경 생성 및 활성화
 
@@ -57,7 +57,7 @@ python run.py
 
 서버가 `http://localhost:5000`에서 실행됩니다.
 
-## 📱 Frontend 설정
+## Frontend 설정
 
 ### 1. 의존성 설치
 
@@ -66,25 +66,15 @@ cd frontend
 npm install
 ```
 
-### 2. React Native 개발 서버 실행
+### 2. 웹 서버 실행
 
 ```bash
-npm start
+npx serve -s . -l 3000
 ```
 
-### 3. 앱 실행
+브라우저에서 `http://localhost:3000` 접속
 
-**Android:**
-```bash
-npm run android
-```
-
-**iOS (macOS만):**
-```bash
-npm run ios
-```
-
-## 🧪 테스트
+## 테스트
 
 ### API 테스트
 
@@ -98,7 +88,7 @@ curl -X POST http://localhost:5000/api/call/start \
   -d '{"caller_number": "010-1234-5678", "user_id": "test_user"}'
 ```
 
-## 🔑 API 키 발급 가이드
+## API 키 발급 가이드
 
 ### OpenAI API Key
 1. https://platform.openai.com 접속
@@ -117,24 +107,24 @@ curl -X POST http://localhost:5000/api/call/start \
 3. Speech-to-Text API 활성화
 4. 서비스 계정 키 생성
 
-## 🐛 문제 해결
+## 문제 해결
 
 ### 포트 충돌
 - 백엔드 포트 변경: `.env` 파일에서 `PORT=5001` 등으로 변경
-- 프론트엔드 API URL 변경: `frontend/src/services/api.js`에서 `API_BASE_URL` 수정
+- 프론트엔드 API URL 변경: `frontend/app-full.js`에서 `API_BASE_URL` 수정
 
 ### 모듈 import 오류
 - Python 경로 확인: `backend` 디렉토리에서 실행하는지 확인
 - Node 모듈 재설치: `rm -rf node_modules && npm install`
 
-## 📝 개발 모드
+## 개발 모드
 
 개발 중에는 다음을 사용하세요:
 
 - **Backend**: Flask의 자동 리로드 기능 사용 (`FLASK_DEBUG=True`)
-- **Frontend**: React Native의 Fast Refresh 사용 (`npm start`)
+- **Frontend**: 브라우저 새로고침으로 변경사항 확인
 
-## 🚀 프로덕션 배포
+## 프로덕션 배포
 
 프로덕션 배포 시:
 
@@ -142,4 +132,3 @@ curl -X POST http://localhost:5000/api/call/start \
 2. API 키를 안전하게 관리 (환경 변수 또는 시크릿 관리 서비스 사용)
 3. HTTPS 사용 필수
 4. CORS 설정 확인
-

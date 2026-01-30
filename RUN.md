@@ -1,4 +1,4 @@
-# 🚀 실행 방법 (Windows)
+# 실행 방법 (Windows)
 
 ## 방법 1: 스크립트 사용 (가장 간단!)
 
@@ -14,7 +14,7 @@
 
 ## 방법 2: 수동 실행
 
-### 1️⃣ 백엔드 실행
+### 1. 백엔드 실행
 
 **PowerShell에서:**
 
@@ -43,9 +43,9 @@ cd backend
 python run.py
 ```
 
-✅ 백엔드가 `http://localhost:5000`에서 실행됩니다!
+백엔드가 `http://localhost:5000`에서 실행됩니다!
 
-### 2️⃣ 프론트엔드 실행 (새 PowerShell 창)
+### 2. 프론트엔드 실행 (새 PowerShell 창)
 
 ```powershell
 # 프로젝트 루트로 이동
@@ -57,21 +57,13 @@ cd frontend
 # 의존성 설치 (처음 한 번만)
 npm install
 
-# React Native 서버 시작
-npm start
+# 웹 서버 시작
+npx serve -s . -l 3000
 ```
 
-### 3️⃣ 앱 실행
+브라우저에서 `http://localhost:3000` 접속
 
-**Android:**
-```powershell
-npm run android
-```
-
-**또는 Expo Go 앱 사용:**
-- `npm start` 실행 후 나타나는 QR 코드를 Expo Go 앱으로 스캔
-
-## ⚠️ 문제 해결
+## 문제 해결
 
 ### PowerShell 실행 정책 오류
 ```powershell
@@ -94,7 +86,7 @@ rm -r node_modules
 npm install
 ```
 
-## 🧪 테스트
+## 테스트
 
 백엔드가 실행 중일 때:
 
@@ -106,7 +98,7 @@ npm install
 curl http://localhost:5000/health
 ```
 
-## 📝 .env 파일 예시
+## .env 파일 예시
 
 프로젝트 루트에 `.env` 파일을 만들고:
 
@@ -124,5 +116,4 @@ TWILIO_ACCOUNT_SID=...
 TWILIO_AUTH_TOKEN=...
 ```
 
-**참고:** OpenAI API 키가 없어도 모의(mock) 응답으로 테스트할 수 있습니다!
-
+참고: OpenAI API 키가 없어도 모의(mock) 응답으로 테스트할 수 있습니다!

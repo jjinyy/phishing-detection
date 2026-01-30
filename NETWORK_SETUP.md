@@ -1,6 +1,6 @@
 # 네트워크 접속 설정 가이드
 
-## 🌐 같은 네트워크의 다른 PC에서 접속하기
+## 같은 네트워크의 다른 PC에서 접속하기
 
 ### 1. 서버 PC (현재 PC) 설정
 
@@ -28,143 +28,80 @@ ip addr show
 
 #### 1-2. 백엔드 서버 실행
 
-백엔드는 이미 `0.0.0.0`으로 설정되어 있어 외부 접근이 가능합니다.
-
-```bash
-# 백엔드 실행
-python backend/run.py
-```
-
-또는
+백엔드를 실행할 때 모든 네트워크 인터페이스에서 접속을 허용하도록 설정합니다:
 
 ```powershell
-# PowerShell
-.\start-backend.ps1
+cd backend
+python run.py
 ```
 
-백엔드는 `http://0.0.0.0:5000` 또는 `http://[서버IP]:5000`에서 실행됩니다.
+또는 `start-network-server.ps1` 스크립트를 사용하면 자동으로 방화벽 규칙을 추가합니다.
 
-#### 1-3. 프론트엔드 서버 실행 (외부 접근 허용)
+#### 1-3. 프론트엔드 서버 실행
 
-**방법 1: npx serve 사용 (권장)**
+프론트엔드를 실행할 때도 모든 네트워크 인터페이스에서 접속을 허용하도록 설정합니다:
 
-```bash
+```powershell
 cd frontend
 npx serve -s . -l 3000 --host 0.0.0.0
-```
-
-**방법 2: Python HTTP 서버 사용**
-
-```bash
-cd frontend
-python -m http.server 3000 --bind 0.0.0.0
-```
-
-#### 1-4. Windows 방화벽 설정
-
-Windows 방화벽에서 포트 3000과 5000을 허용해야 합니다:
-
-1. **제어판** → **시스템 및 보안** → **Windows Defender 방화벽**
-2. **고급 설정** → **인바운드 규칙** → **새 규칙**
-3. **포트** 선택 → **TCP** → **특정 로컬 포트**: `3000, 5000`
-4. **연결 허용** 선택 → 완료
-
-또는 PowerShell에서:
-
-```powershell
-# 관리자 권한으로 실행
-New-NetFirewallRule -DisplayName "5분 방패 AI - Frontend" -Direction Inbound -LocalPort 3000 -Protocol TCP -Action Allow
-New-NetFirewallRule -DisplayName "5분 방패 AI - Backend" -Direction Inbound -LocalPort 5000 -Protocol TCP -Action Allow
 ```
 
 ### 2. 클라이언트 PC (다른 PC) 설정
 
-#### 2-1. 프론트엔드 API URL 수정
+#### 2-1. 브라우저에서 접속
 
-**옵션 1: 자동 IP 감지 (권장)**
-
-프론트엔드가 자동으로 서버 IP를 감지하도록 설정되어 있습니다.
-
-**옵션 2: 수동 설정**
-
-`frontend/app-full.js` 파일에서:
-
-```javascript
-// 현재 (localhost)
-const API_BASE_URL = 'http://localhost:5000/api';
-
-// 변경 (서버 PC의 IP 주소로 변경)
-const API_BASE_URL = 'http://192.168.0.100:5000/api';
-```
-
-#### 2-2. 브라우저에서 접속
-
-클라이언트 PC의 브라우저에서:
+클라이언트 PC의 브라우저에서 다음 주소로 접속:
 
 ```
-http://[서버IP]:3000
+http://192.168.0.100:3000
 ```
 
-예시: `http://192.168.0.100:3000`
+(192.168.0.100은 서버 PC의 IP 주소로 변경하세요)
 
-### 3. 자동 IP 감지 기능
+#### 2-2. 백엔드 API 연결 확인
 
-프론트엔드가 자동으로 서버 IP를 감지하도록 설정되어 있습니다:
+프론트엔드가 자동으로 서버 IP를 감지하여 백엔드 API에 연결합니다. 만약 연결이 안 되면:
 
-1. 현재 URL의 호스트를 확인
-2. localhost가 아니면 해당 호스트 사용
-3. localhost면 자동으로 서버 IP 감지 시도
+1. 서버 PC의 백엔드가 실행 중인지 확인
+2. 서버 PC의 IP 주소가 올바른지 확인
+3. 방화벽 설정 확인
+
+### 3. 방화벽 설정 (Windows)
+
+#### 3-1. PowerShell 관리자 권한으로 실행
+
+```powershell
+# 포트 5000 (백엔드) 허용
+New-NetFirewallRule -DisplayName "5분 방패 AI Backend" -Direction Inbound -LocalPort 5000 -Protocol TCP -Action Allow
+
+# 포트 3000 (프론트엔드) 허용
+New-NetFirewallRule -DisplayName "5분 방패 AI Frontend" -Direction Inbound -LocalPort 3000 -Protocol TCP -Action Allow
+```
+
+#### 3-2. 또는 자동 스크립트 사용
+
+`start-network-server.ps1` 스크립트를 실행하면 자동으로 방화벽 규칙을 추가합니다:
+
+```powershell
+.\start-network-server.ps1
+```
 
 ### 4. 문제 해결
 
-#### 문제 1: 연결할 수 없음
+#### 포트가 열려있지 않음
+- 방화벽 규칙이 제대로 추가되었는지 확인
+- Windows 방화벽 설정에서 수동으로 규칙 추가
 
-**해결:**
-- 서버 PC의 IP 주소가 올바른지 확인
-- 서버 PC의 방화벽에서 포트 3000, 5000 허용 확인
-- 같은 네트워크(Wi-Fi/이더넷)에 연결되어 있는지 확인
+#### IP 주소를 찾을 수 없음
+- 같은 네트워크(Wi-Fi 또는 이더넷)에 연결되어 있는지 확인
+- 라우터 설정 확인
 
-#### 문제 2: CORS 에러
+#### 연결은 되지만 백엔드 API 호출 실패
+- 백엔드 서버가 실행 중인지 확인
+- CORS 설정 확인 (이미 모든 origin 허용으로 설정됨)
 
-**해결:**
-- 백엔드의 CORS 설정이 `*`로 되어 있는지 확인 (`backend/app.py`)
-- 서버 IP를 CORS 허용 목록에 추가
+### 5. 보안 주의사항
 
-#### 문제 3: 백엔드 연결 실패
-
-**해결:**
-- `http://[서버IP]:5000/health` 접속하여 백엔드가 실행 중인지 확인
-- 프론트엔드의 `API_BASE_URL`이 올바른지 확인
-
-### 5. 빠른 설정 스크립트
-
-**서버 PC에서 실행:**
-
-```powershell
-# PowerShell 스크립트 (start-network-server.ps1)
-$ip = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.IPAddress -notlike "127.*"}).IPAddress | Select-Object -First 1
-Write-Host "서버 IP: $ip" -ForegroundColor Green
-Write-Host "프론트엔드: http://$ip:3000" -ForegroundColor Cyan
-Write-Host "백엔드: http://$ip:5000" -ForegroundColor Cyan
-
-# 방화벽 규칙 추가
-New-NetFirewallRule -DisplayName "5분 방패 AI - Frontend" -Direction Inbound -LocalPort 3000 -Protocol TCP -Action Allow -ErrorAction SilentlyContinue
-New-NetFirewallRule -DisplayName "5분 방패 AI - Backend" -Direction Inbound -LocalPort 5000 -Protocol TCP -Action Allow -ErrorAction SilentlyContinue
-
-# 백엔드 시작
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$PWD'; python backend/run.py"
-
-# 프론트엔드 시작
-cd frontend
-npx serve -s . -l 3000 --host 0.0.0.0
-```
-
-### 6. 보안 주의사항
-
-⚠️ **개발 환경에서만 사용하세요!**
-
-- 프로덕션 환경에서는 HTTPS 사용 필수
-- 방화벽 규칙을 신중하게 설정
-- 민감한 정보는 환경 변수로 관리
-- 외부 네트워크 접근 시 추가 보안 조치 필요
-
+- 이 설정은 로컬 네트워크에서만 사용하세요
+- 인터넷에 노출되지 않도록 주의하세요
+- 프로덕션 환경에서는 HTTPS와 인증을 사용하세요
