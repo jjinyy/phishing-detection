@@ -41,7 +41,7 @@ police/
 │   │   └── stt_service.py     # 음성 인식 서비스
 │   ├── models/          # 데이터 모델
 │   └── utils/           # 유틸리티 함수
-├── frontend/            # 웹앱 프론트엔드
+├── docs/                # 웹앱 프론트엔드 (GitHub Pages)
 │   ├── index.html       # 메인 HTML 파일
 │   ├── app-full.js      # React 앱 전체 코드
 │   └── services/        # STT/TTS 서비스
@@ -88,7 +88,7 @@ python run.py
 ### Frontend 설정
 
 ```bash
-cd frontend
+cd docs
 npx serve -s . -l 3000
 ```
 
