@@ -9,10 +9,6 @@ env/
 ENV/
 .venv
 
-# Flask
-instance/
-.webassets-cache
-
 # Environment variables
 .env
 .env.local
@@ -22,7 +18,6 @@ instance/
 .idea/
 *.swp
 *.swo
-*~
 
 # OS
 .DS_Store
@@ -34,10 +29,10 @@ Thumbs.db
 # Node
 node_modules/
 npm-debug.log
-yarn-error.log
 
 # Build
 dist/
 build/
-*.egg-info/
 
+# Railway
+.railway/

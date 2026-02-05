@@ -37,3 +37,5 @@ Write-Host ""
 cd backend
 python run.py
 
+
+

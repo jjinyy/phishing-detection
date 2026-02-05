@@ -6,7 +6,7 @@ from twilio.rest import Client
 from twilio.twiml.voice_response import VoiceResponse, Gather
 
 class VoIPService:
-    """VoIP 통화를 처리하는 서비스"""
+    """VoIP 통화 처리 서비스"""
     
     def __init__(self):
         account_sid = os.getenv('TWILIO_ACCOUNT_SID')

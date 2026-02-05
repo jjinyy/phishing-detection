@@ -11,6 +11,7 @@ class Config:
     # Flask 설정
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
     DEBUG = os.getenv('FLASK_DEBUG', 'True').lower() == 'true'
+    # Railway/Render는 PORT 환경 변수를 자동으로 제공
     PORT = int(os.getenv('PORT', 5000))
     
     # OpenAI 설정
@@ -45,4 +46,6 @@ config = {
     'production': ProductionConfig,
     'default': DevelopmentConfig
 }
+
+
 

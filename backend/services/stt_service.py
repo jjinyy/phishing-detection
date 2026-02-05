@@ -51,3 +51,5 @@ class STTService:
         # return response.json()['results'][0]['alternatives'][0]['transcript']
         pass
 
+
+

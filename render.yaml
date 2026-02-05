@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: police-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && python run.py
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: OPENAI_API_KEY
+        sync: false  # 수동으로 설정 필요
+

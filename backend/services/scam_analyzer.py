@@ -6,7 +6,7 @@ from typing import List, Dict, Any
 from datetime import datetime
 
 class ScamAnalyzer:
-    """피싱/스캠 패턴을 분석하는 서비스"""
+    """피싱/스캠 패턴 분석 서비스"""
     
     def __init__(self):
         # 스캠 키워드 패턴

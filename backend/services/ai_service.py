@@ -16,7 +16,7 @@ class AIService:
             self.client = None
             print("Warning: OPENAI_API_KEY not set. Using mock responses.")
     
-    def generate_response(self, user_input: str, scam_score: float = 0.0) -> str:
+    def generate_response(self, user_input: str, scam_score: float = 0.0, user_role: str = 'scammer', conversation_history: list = None) -> str:
         """
         사용자 입력에 대한 AI 응답 생성
         
@@ -24,6 +24,7 @@ class AIService:
             user_input: 상대방의 발화 내용
             scam_score: 스캠 점수 (0.0 ~ 1.0)
             user_role: 사용자 역할 ('scammer' = 피싱범 역할, 'victim' = 피해자 역할)
+            conversation_history: 대화 히스토리 (선택사항)
             
         Returns:
             AI 응답 텍스트
@@ -34,22 +35,34 @@ class AIService:
         # 사용자 역할과 스캠 점수에 따라 응답 전략 조정
         system_prompt = self._get_system_prompt(scam_score, user_role)
         
+        # 대화 히스토리가 있으면 포함
+        messages = [{"role": "system", "content": system_prompt}]
+        
+        if conversation_history:
+            # 최근 10개 대화만 포함 (너무 길면 토큰 낭비)
+            recent_history = conversation_history[-10:]
+            for item in recent_history:
+                if item.get('speaker') == 'caller':
+                    messages.append({"role": "user", "content": item.get('text', '')})
+                elif item.get('speaker') == 'ai':
+                    messages.append({"role": "assistant", "content": item.get('text', '')})
+        
+        # 현재 사용자 입력 추가
+        messages.append({"role": "user", "content": user_input})
+        
         try:
             response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_input}
-                ],
-                temperature=0.7,
-                max_tokens=150
+                messages=messages,
+                temperature=0.8,  # 더 다양한 응답을 위해 증가
+                max_tokens=200  # 더 긴 응답을 위해 증가
             )
             
             return response.choices[0].message.content.strip()
             
         except Exception as e:
             print(f"Error generating AI response: {e}")
-            return self._mock_response(user_input, scam_score)
+            return self._mock_response(user_input, scam_score, user_role)
     
     def _get_system_prompt(self, scam_score: float, user_role: str = 'scammer') -> str:
         """스캠 점수와 사용자 역할에 따른 시스템 프롬프트 생성"""

@@ -15,18 +15,25 @@ const mergeStyles = (...styleObjects) => {
 };
 
 // API 기본 URL (자동 IP 감지)
-// 현재 호스트가 localhost가 아니면 해당 호스트 사용
-// localhost면 자동으로 서버 IP 감지
+// 배포 환경에 따라 백엔드 서버 URL 설정
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
   
-  // localhost가 아니면 현재 호스트 사용
-  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-    return `http://${hostname}:5000/api`;
+  // 프로덕션 환경: 백엔드 서버 URL 직접 지정
+  // Railway 배포 시: https://your-backend-name.railway.app/api
+  // Render 배포 시: https://your-backend-name.onrender.com/api
+  // TODO: 실제 배포 시 아래 주석을 해제하고 백엔드 URL을 입력하세요
+  // if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+  //   return 'https://your-backend.railway.app/api';
+  // }
+  
+  // 로컬 개발 환경
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:5000/api';
   }
   
-  // localhost면 기본값 사용 (같은 PC에서 접속)
-  return 'http://localhost:5000/api';
+  // 같은 네트워크에서 접속 시 (로컬 네트워크)
+  return `http://${hostname}:5000/api`;
 };
 
 const API_BASE_URL = getApiBaseUrl();
@@ -128,13 +135,13 @@ const callService = {
       };
     }
   },
-  processAudio: async (callId, text) => {
+  processAudio: async (callId, text, userRole) => {
     // STT는 프론트엔드에서 처리되므로 텍스트를 그대로 전송
     try {
       const response = await fetch(`${API_BASE_URL}/call/process-audio`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ call_id: callId, audio_data: text })
+        body: JSON.stringify({ call_id: callId, audio_data: text, user_role: userRole })
       });
       return await response.json();
     } catch (error) {
@@ -461,12 +468,12 @@ function IncomingCallScreen({ callerNumber, onEndCall, onReport }) {
     };
   };
   
-  // conversationHistory가 변경될 때마다 ref 업데이트
+  // conversationHistory 변경 시 ref 업데이트
   useEffect(() => {
     conversationHistoryRef.current = conversationHistory;
   }, [conversationHistory]);
-  
-  // scamScore가 변경될 때마다 ref 업데이트
+
+  // scamScore 변경 시 ref 업데이트
   useEffect(() => {
     scamScoreRef.current = scamScore;
   }, [scamScore]);
@@ -698,7 +705,7 @@ function IncomingCallScreen({ callerNumber, onEndCall, onReport }) {
                 패턴_감지: hasAnyPattern
               });
               
-              // result 계산 직전에 최신 점수 다시 확인
+              // result 계산 직전에 최신 점수 재확인
               const rightBeforeResultState = scamScore;
               const rightBeforeResultRef = scamScoreRef.current;
               const rightBeforeResultScore = Math.max(finalScore, rightBeforeResultState, rightBeforeResultRef);
@@ -749,7 +756,7 @@ function IncomingCallScreen({ callerNumber, onEndCall, onReport }) {
                 ];
               }
               
-              // 리포트 객체 생성 직전에 최신 점수 다시 확인
+              // 리포트 객체 생성 직전에 최신 점수 재확인
               const rightBeforeReportState = scamScore;
               const rightBeforeReportRef = scamScoreRef.current;
               const rightBeforeReportScore = Math.max(finalScore, rightBeforeReportState, rightBeforeReportRef);

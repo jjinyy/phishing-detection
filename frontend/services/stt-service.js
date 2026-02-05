@@ -46,12 +46,12 @@ class STTService {
       const permissionState = await this.checkMicrophonePermission();
       
       if (permissionState === 'granted') {
-        console.log('마이크 권한이 이미 허용되어 있습니다.');
+        console.log('마이크 권한이 이미 허용됨');
         return true;
       }
       
       if (permissionState === 'denied') {
-        console.warn('마이크 권한이 거부되어 있습니다.');
+        console.warn('마이크 권한이 거부됨');
         return false;
       }
       
@@ -70,7 +70,7 @@ class STTService {
       }
       
       // 다른 에러는 권한 문제가 아닐 수 있으므로 true 반환 (Speech Recognition이 직접 시도하도록)
-      console.warn('마이크 권한 확인 실패, Speech Recognition이 직접 시도합니다.');
+      console.warn('마이크 권한 확인 실패, Speech Recognition이 직접 시도함');
       return true;
     }
   }
@@ -83,7 +83,7 @@ class STTService {
   async startListening(onResult, onError) {
     if (!this.SpeechRecognition) {
       console.error('Speech Recognition API not supported in this browser');
-      if (onError) onError('NOT_SUPPORTED', '이 브라우저는 음성 인식을 지원하지 않습니다.');
+      if (onError) onError('NOT_SUPPORTED', '이 브라우저는 음성 인식을 지원하지 않음');
       return;
     }
 
@@ -97,9 +97,9 @@ class STTService {
         console.log('마이크 권한 상태:', result.state);
         
         if (result.state === 'denied') {
-          console.error('마이크 권한이 명확히 거부되어 있습니다.');
+          console.error('마이크 권한이 명확히 거부됨');
           if (onError) {
-            onError('PERMISSION_DENIED', '마이크 권한이 거부되었습니다. 브라우저 주소창의 자물쇠 아이콘을 클릭하여 마이크 권한을 "허용"으로 변경해주세요.');
+            onError('PERMISSION_DENIED', '마이크 권한이 거부됨. 브라우저 주소창의 자물쇠 아이콘을 클릭하여 마이크 권한을 "허용"으로 변경');
           }
           return;
         }
@@ -168,20 +168,20 @@ class STTService {
         }
         
         // 에러 메시지 매핑
-        let errorMessage = '음성 인식 중 오류가 발생했습니다.';
+        let errorMessage = '음성 인식 중 오류 발생';
         switch (event.error) {
           case 'not-allowed':
-            errorMessage = '마이크 권한이 거부되었습니다. 브라우저 주소창의 자물쇠 아이콘을 클릭하여 마이크 권한을 허용해주세요.';
+            errorMessage = '마이크 권한이 거부됨. 브라우저 주소창의 자물쇠 아이콘을 클릭하여 마이크 권한 허용';
             break;
           case 'no-speech':
             // no-speech는 에러로 처리하지 않음 (계속 대기)
             console.log('음성이 감지되지 않음 (계속 대기 중)');
             return;
           case 'audio-capture':
-            errorMessage = '마이크를 찾을 수 없습니다. 마이크가 연결되어 있는지 확인해주세요.';
+            errorMessage = '마이크를 찾을 수 없음. 마이크 연결 확인 필요';
             break;
           case 'network':
-            errorMessage = '네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.';
+            errorMessage = '네트워크 오류 발생. 인터넷 연결 확인 필요';
             break;
           default:
             errorMessage = `음성 인식 오류: ${event.error}`;

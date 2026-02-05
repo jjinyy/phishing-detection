@@ -118,7 +118,3 @@ GOOGLE_CLOUD_API_KEY=your_google_cloud_api_key (선택사항)
 - 통화 음성 서버 저장 없음
 - 실시간 처리 후 즉시 폐기
 - 사용자 동의 기반 서비스 운영
-
-## 라이선스
-
-MIT License

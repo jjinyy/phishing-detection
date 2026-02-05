@@ -139,10 +139,10 @@ def end_call():
 @app.route('/api/call/report/<call_id>', methods=['GET'])
 def get_report(call_id):
     """통화 리포트 조회"""
-    # 실제로는 데이터베이스에서 조회하지만, 여기서는 예시만 제공
+    # 실제로는 DB에서 조회하지만 여기서는 예시만 제공
     return jsonify({
         "call_id": call_id,
-        "message": "리포트는 통화 종료 시 생성됩니다."
+        "message": "리포트는 통화 종료 시 생성됨"
     }), 200
 
 if __name__ == '__main__':

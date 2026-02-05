@@ -53,9 +53,9 @@ class VoiceCallHandler {
           }
         });
       } else {
-        console.warn('STT가 지원되지 않습니다. 텍스트 입력 모드로 전환하세요.');
+        console.warn('STT가 지원되지 않음. 텍스트 입력 모드로 전환');
         if (this.onError) {
-          this.onError('STT_NOT_SUPPORTED', '음성 인식이 지원되지 않는 브라우저입니다.');
+          this.onError('STT_NOT_SUPPORTED', '음성 인식이 지원되지 않는 브라우저');
         }
       }
 

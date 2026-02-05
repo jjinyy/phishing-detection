@@ -51,3 +51,5 @@ def format_duration(seconds: int) -> str:
     secs = seconds % 60
     return f"{mins}:{secs:02d}"
 
+
+
