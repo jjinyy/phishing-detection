@@ -19,21 +19,13 @@ const mergeStyles = (...styleObjects) => {
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
   
-  // 프로덕션 환경: 백엔드 서버 URL 직접 지정
-  // Railway 배포 시: https://your-backend-name.railway.app/api
-  // Render 배포 시: https://your-backend-name.onrender.com/api
-  // TODO: 실제 배포 시 아래 주석을 해제하고 백엔드 URL을 입력하세요
-  // if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-  //   return 'https://your-backend.railway.app/api';
-  // }
-  
-  // 로컬 개발 환경
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'http://localhost:5000/api';
+  // 프로덕션 환경: Render 백엔드 URL 사용
+  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+    return 'https://phishing-detection-34g2.onrender.com/api';
   }
   
-  // 같은 네트워크에서 접속 시 (로컬 네트워크)
-  return `http://${hostname}:5000/api`;
+  // 로컬 개발 환경
+  return 'http://localhost:5000/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();
