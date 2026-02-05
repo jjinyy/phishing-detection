@@ -12,3 +12,5 @@ services:
       - key: OPENAI_API_KEY
         sync: false  # 수동으로 설정 필요
 
+
+

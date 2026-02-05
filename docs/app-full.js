@@ -1706,5 +1706,9 @@ const styles = {
   settingsItem: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 0', borderBottom: '1px solid rgba(0,0,0,0.05)' }
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const { createRoot } = ReactDOM;
+
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
+root.render(<App />);
 
