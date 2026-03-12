@@ -148,6 +148,3 @@ phishing-detection/
 
 Keyword-based detection is fragile against phishing patterns it hasn't seen before. Replacing it with an LLM-based classifier would help catch more sophisticated scripts. Switching to a Korean-optimized STT model like Clova Speech would also improve transcription accuracy.
 
----
-
-*Built for research and educational purposes around voice phishing prevention.*
